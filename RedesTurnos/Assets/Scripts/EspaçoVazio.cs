@@ -5,6 +5,7 @@ public class EspaçoVazio : MonoBehaviour
     public int linha;
     public int coluna;
     public bool temDama;
+    public bool selecionavel;
     private SpriteRenderer spriteRenderer;
     
     
