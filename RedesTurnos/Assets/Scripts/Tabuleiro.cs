@@ -5,14 +5,14 @@ public class Tabuleiro : MonoBehaviour
     private static int n = 8;
     [SerializeField] private GameObject quadrado;
     [SerializeField] private GameObject peca;
+    [SerializeField] private GameObject pecaBranca;
+    [SerializeField] private GameObject pecaPreta;
     public GameObject[,] espaco = new GameObject[n,n];
-    public GameObject[,] pecas = new GameObject[n,n];
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         ConstruirTabuleiro();
-        ColocarPeca();
     }
 
     private void ConstruirTabuleiro()
@@ -31,6 +31,14 @@ public class Tabuleiro : MonoBehaviour
                         else
                         {
                             sprite.color = Color.black;
+                            if (i < 3)
+                            {
+                                ColocarPeca(espacoLugar.x, espacoLugar.y, "branca");
+                            }
+                            else if (i > 4)
+                            {
+                                ColocarPeca(espacoLugar.x, espacoLugar.y, "preta");
+                            }
                         }
                         espaco[i,j] = novoQuadrado;
                         espacoLugar.x += 1.0f;
@@ -40,23 +48,19 @@ public class Tabuleiro : MonoBehaviour
                 }
     }
 
-    private void ColocarPeca()
+    private void ColocarPeca(float posX, float posY, string time)
     {
-        Vector2 pecaLugar = peca.GetComponent<Transform>().position;
-        for (int i = 0; i < n; i++)
+        Vector3 pecaLugar = peca.GetComponent<Transform>().position;
+        pecaLugar.z = -1f;
+        pecaLugar.x = posX;
+        pecaLugar.y = posY;
+        if (time == "branca")
         {
-            for (int j = 0; j < n; j++)
-            {
-                if (j % 2 == 0 ^ i % 2 == 0)
-                {
-                    GameObject novaPeca = Instantiate(peca, pecaLugar, Quaternion.identity);
-                    SpriteRenderer sprite = novaPeca.GetComponent<SpriteRenderer>();
-                    espaco[i,j] = novaPeca;
-                    pecaLugar.x += 1.0f;
-                }
-                pecaLugar.y -= 1.0f;
-                pecaLugar.x = quadrado.GetComponent<Transform>().position.x;
-            }
+            GameObject novaPeca = Instantiate(pecaBranca, pecaLugar, Quaternion.identity);
+        }
+        else if (time == "preta")
+        {
+            GameObject novaPeca = Instantiate(pecaPreta, pecaLugar, Quaternion.identity);
         }
     }
 
