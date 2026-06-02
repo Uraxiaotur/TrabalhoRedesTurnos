@@ -1,29 +1,30 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class Dama : MonoBehaviour
+public class Dama : Peca
 {
     [SerializeField] private enumCor cor;
     [SerializeField] private bool virouDama;
     [SerializeField] private GameObject detector;
+
+    public Dama(int x, int y, enumCor cor) : base(x, y, cor) {}
+
+    public void Update()
+    {
+        
+    }
     
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void SelecionarCasa()
+    public void SelecionarCasa(enumCor cor)
     {
         if (Input.GetMouseButtonDown(0))
         {
-            BoxCollider2D detectorCollider = GetComponentInChildren<BoxCollider2D>();
             
         }
     }
+
+    public void OnTurn(enumCor cor)
+    {
+        
+    }
+    
 }
