@@ -1,30 +1,39 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Dama : Peca
+public class Dama : MonoBehaviour
 {
     [SerializeField] private enumCor cor;
     [SerializeField] private bool virouDama;
     [SerializeField] private GameObject detector;
+    [SerializeField] private bool onTurn;
+    private SpriteRenderer spriteRenderer;
 
-    public Dama(int x, int y, enumCor cor) : base(x, y, cor) {}
-
-    public void Update()
+    private void Start()
     {
-        
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
     
-    public void SelecionarCasa(enumCor cor)
+    public void Selected()
     {
-        if (Input.GetMouseButtonDown(0))
+        spriteRenderer.color = Color.red;
+        Debug.Log($"Peça {cor} clicada");
+    }
+
+    private void Update()
+    {
+        OnTurn();
+    }
+
+    private void OnTurn()
+    {
+        if (GameManager.Instance.turnoCor == cor)
         {
-            
+            onTurn = true;
+        }
+        else
+        {
+            onTurn = false;
         }
     }
-
-    public void OnTurn(enumCor cor)
-    {
-        
-    }
-    
 }
