@@ -1,6 +1,13 @@
 using UnityEngine;
 using System.Collections;
 
+public enum enumCor
+{
+    branco,
+    preto,
+    vazio
+}
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }

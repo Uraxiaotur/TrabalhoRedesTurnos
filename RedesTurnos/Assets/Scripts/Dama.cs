@@ -1,33 +1,40 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Dama : MonoBehaviour
 {
-    [SerializeField] private enumCor cor;
-    [SerializeField] private bool virouDama;
-    [SerializeField] private GameObject detector;
-    [SerializeField] private bool onTurn;
-    private SpriteRenderer spriteRenderer;
+    public enumCor time;
 
-    private void Start()
+    // Update is called once per frame
+    void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    private void Update()
+    public void Selected()
     {
-        OnTurn();
-    }
+        VerifyTurn();
 
-    private void OnTurn()
-    {
-        if (GameManager.Instance.turnoCor == cor)
+        if (!VerifyTurn())
         {
-            onTurn = true;
+        }
+        
+    }
+    
+    public bool VerifyTurn()
+    {
+        if (GameManager.Instance.turnoCor == time)
+        {
+            Debug.Log("Peça selecionada");
+            return true;
         }
         else
         {
-            onTurn = false;
+            Debug.Log("Vez do outro time");
+            return false;
         }
+    }
+
+    private void ChooseTile()
+    {
+        
     }
 }

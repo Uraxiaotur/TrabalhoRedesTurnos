@@ -1,13 +1,19 @@
 using UnityEngine;
+using UnityEngine.UI;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class Tabuleiro : MonoBehaviour
 {
     private static int n = 8;
-    [SerializeField] private GameObject quadrado;
-    [SerializeField] private GameObject peca;
-    [SerializeField] private GameObject pecaBranca;
-    [SerializeField] private GameObject pecaPreta;
-    public GameObject[,] espaco = new GameObject[n,n];
+    [SerializeField] private GameObject tile;
+    [SerializeField] private Button peca;
+    [SerializeField] private Button pecaBranca;
+    [SerializeField] private Button pecaPreta;
+    [SerializeField] private GameObject parent;
+    public GameObject[,] pecasBrancas = new GameObject[n,n];
+    public GameObject[,] pecasPretas = new GameObject[n,n];
+    private GameObject[,] espacos;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -17,20 +23,24 @@ public class Tabuleiro : MonoBehaviour
 
     private void ConstruirTabuleiro()
     {
-        Vector2 espacoLugar = quadrado.GetComponent<Transform>().position;
+        espacos = new GameObject[n, n];
+        Vector2 espacoLugar = tile.GetComponent<RectTransform>().position;
                 for (int i = 0; i < n; i++)
                 {
                     for (int j = 0; j < n; j++)
                     {
-                        GameObject novoQuadrado = Instantiate(quadrado, espacoLugar, Quaternion.identity);
-                        SpriteRenderer sprite = novoQuadrado.GetComponent<SpriteRenderer>();
+                        GameObject novoQuadrado = Instantiate(tile, espacoLugar, Quaternion.identity);
+                        novoQuadrado.GetComponent<TilePosition>().x = j;
+                        novoQuadrado.GetComponent<TilePosition>().y = i;
+                        novoQuadrado.transform.SetParent(parent.transform);
+                        Image sprite = novoQuadrado.GetComponent<Image>();
                         if (j % 2 == 0 ^ i % 2 == 0)
                         {
-                            sprite.color = Color.white;
+                            sprite.color = Color.navajoWhite;
                         }
                         else
                         {
-                            sprite.color = Color.black;
+                            sprite.color = Color.seaGreen;
                             if (i < 3)
                             {
                                 ColocarPeca(espacoLugar.x, espacoLugar.y, "branca");
@@ -40,11 +50,12 @@ public class Tabuleiro : MonoBehaviour
                                 ColocarPeca(espacoLugar.x, espacoLugar.y, "preta");
                             }
                         }
-                        espaco[i,j] = novoQuadrado;
-                        espacoLugar.x += 1.0f;
+                        espacoLugar.x += 50f;
+                        espacos[i, j] = novoQuadrado;
                     }
-                    espacoLugar.y -= 1.0f;
-                    espacoLugar.x = quadrado.GetComponent<Transform>().position.x;
+                    
+                    espacoLugar.y -= 50f;
+                    espacoLugar.x = tile.GetComponent<Transform>().position.x;
                 }
     }
 
@@ -56,11 +67,17 @@ public class Tabuleiro : MonoBehaviour
         pecaLugar.y = posY;
         if (time == "branca")
         {
-            GameObject novaPeca = Instantiate(pecaBranca, pecaLugar, Quaternion.identity);
+            Button novaPeca = Instantiate(pecaBranca, pecaLugar, Quaternion.identity);
+            Image image = novaPeca.GetComponent<Image>();
+            image.color = Color.white;
+            novaPeca.transform.SetParent(parent.transform);
         }
         else if (time == "preta")
         {
-            GameObject novaPeca = Instantiate(pecaPreta, pecaLugar, Quaternion.identity);
+            Button novaPeca = Instantiate(pecaPreta, pecaLugar, Quaternion.identity);
+            Image image = novaPeca.GetComponent<Image>();
+            image.color = Color.black;
+            novaPeca.transform.SetParent(parent.transform);
         }
     }
 
