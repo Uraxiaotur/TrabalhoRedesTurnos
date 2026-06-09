@@ -1,7 +1,9 @@
 using UnityEngine;
 
-public class GameOM : MonoBehaviour
+public class BotaBolinhas : MonoBehaviour
 {
+    [SerializeField] private GameObject botao;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -10,6 +12,11 @@ public class GameOM : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    {
+        
+    }
+
+    private void ColocarBolinhas()
     {
         
     }
