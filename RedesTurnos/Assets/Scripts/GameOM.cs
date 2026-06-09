@@ -1,16 +1,19 @@
 using UnityEngine;
+using System;
 
 public class GameOM : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public static event Action<int> OnCollectPeca;
+
+    public static void CollectPeca(int indexPeca)
     {
-        
+        OnCollectPeca?.Invoke(indexPeca);
     }
 
-    // Update is called once per frame
-    void Update()
+    public static event Action OnMovePeca;
+
+    public static void MovePeca()
     {
-        
+        OnMovePeca?.Invoke();
     }
 }
