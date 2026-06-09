@@ -13,12 +13,6 @@ public class Dama : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
-    
-    public void Selected()
-    {
-        spriteRenderer.color = Color.red;
-        Debug.Log($"Peça {cor} clicada");
-    }
 
     private void Update()
     {

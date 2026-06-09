@@ -7,6 +7,7 @@ TagManager:
   - Casa
   - Preta
   - Branca
+  - Selectable
   layers:
   - Default
   - TransparentFX
