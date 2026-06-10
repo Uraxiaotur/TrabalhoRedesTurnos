@@ -10,10 +10,11 @@ public class Tabuleiro : MonoBehaviour
     [SerializeField] private Button peca;
     [SerializeField] private Button pecaBranca;
     [SerializeField] private Button pecaPreta;
-    [SerializeField] private GameObject parent;
-    public GameObject[,] pecasBrancas = new GameObject[n,n];
-    public GameObject[,] pecasPretas = new GameObject[n,n];
-    private GameObject[,] espacos;
+    [SerializeField] private GameObject parentTiles;
+    [SerializeField] private GameObject parentPecas;
+    public GameObject[] pecasBrancas;
+    public GameObject[] pecasPretas;
+    public GameObject[,] espacos;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -32,7 +33,7 @@ public class Tabuleiro : MonoBehaviour
                         GameObject novoQuadrado = Instantiate(tile, espacoLugar, Quaternion.identity);
                         novoQuadrado.GetComponent<TilePosition>().x = j;
                         novoQuadrado.GetComponent<TilePosition>().y = i;
-                        novoQuadrado.transform.SetParent(parent.transform);
+                        novoQuadrado.transform.SetParent(parentTiles.transform);
                         Image sprite = novoQuadrado.GetComponent<Image>();
                         if (j % 2 == 0 ^ i % 2 == 0)
                         {
@@ -43,23 +44,23 @@ public class Tabuleiro : MonoBehaviour
                             sprite.color = Color.seaGreen;
                             if (i < 3)
                             {
-                                ColocarPeca(espacoLugar.x, espacoLugar.y, "branca");
+                                ColocarPeca(espacoLugar.x, espacoLugar.y, "branca", j, i);
                             }
                             else if (i > 4)
                             {
-                                ColocarPeca(espacoLugar.x, espacoLugar.y, "preta");
+                                ColocarPeca(espacoLugar.x, espacoLugar.y, "preta", j, i);
                             }
                         }
-                        espacoLugar.x += 50f;
+                        espacoLugar.x += 40f;
                         espacos[i, j] = novoQuadrado;
                     }
                     
-                    espacoLugar.y -= 50f;
+                    espacoLugar.y -= 40f;
                     espacoLugar.x = tile.GetComponent<Transform>().position.x;
                 }
     }
 
-    private void ColocarPeca(float posX, float posY, string time)
+    private void ColocarPeca(float posX, float posY, string time, int X, int Y)
     {
         Vector3 pecaLugar = peca.GetComponent<Transform>().position;
         pecaLugar.z = -1f;
@@ -68,17 +69,33 @@ public class Tabuleiro : MonoBehaviour
         if (time == "branca")
         {
             Button novaPeca = Instantiate(pecaBranca, pecaLugar, Quaternion.identity);
+            novaPeca.GetComponent<TilePosition>().x = X;
+            novaPeca.GetComponent<TilePosition>().y = Y;
             Image image = novaPeca.GetComponent<Image>();
             image.color = Color.white;
-            novaPeca.transform.SetParent(parent.transform);
+            novaPeca.transform.SetParent(parentPecas.transform);
+            pecasBrancas[X] = novaPeca.gameObject;
         }
         else if (time == "preta")
         {
             Button novaPeca = Instantiate(pecaPreta, pecaLugar, Quaternion.identity);
+            novaPeca.GetComponent<TilePosition>().x = X;
+            novaPeca.GetComponent<TilePosition>().y = Y;
             Image image = novaPeca.GetComponent<Image>();
             image.color = Color.black;
-            novaPeca.transform.SetParent(parent.transform);
+            novaPeca.transform.SetParent(parentPecas.transform);
+            pecasPretas[X] = novaPeca.gameObject;
         }
     }
 
+    private void ShowTilesArray()
+    {
+        foreach (GameObject espacos in espacos)
+        {
+            espacos.GetComponent<TilePosition>().x.ToString();
+            espacos.GetComponent<TilePosition>().y.ToString();
+            
+            Debug.Log("X: " + espacos.GetComponent<TilePosition>().x + " Y: " + espacos.GetComponent<TilePosition>().y);
+        }
+    }
 }

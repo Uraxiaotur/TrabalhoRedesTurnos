@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public enum enumCor
 {
@@ -12,6 +14,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     public enumCor turnoCor;
+    public GameObject selectedChecker;
     
     private void Awake()
     {
@@ -36,7 +39,7 @@ public class GameManager : MonoBehaviour
         GameOM.OnMovePeca -= TurnChange;
     }
 
-    public void Start()
+    private void Start()
     {
         turnoCor = enumCor.branco;
     }
@@ -51,5 +54,10 @@ public class GameManager : MonoBehaviour
         {
             turnoCor = enumCor.branco;
         }
+    }
+
+    public void SelectedChecker(GameObject checker)
+    {
+        selectedChecker = checker;
     }
 }

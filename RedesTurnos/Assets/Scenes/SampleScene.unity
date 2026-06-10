@@ -149,6 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   turnoCor: 2
+  selectedChecker: {fileID: 0}
 --- !u!4 &144818603
 Transform:
   m_ObjectHideFlags: 0
@@ -281,11 +282,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4904731973584535517, guid: ecb0a7dc6ff98a6428d2906098c6c206, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 50
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 4904731973584535517, guid: ecb0a7dc6ff98a6428d2906098c6c206, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 4904731973584535517, guid: ecb0a7dc6ff98a6428d2906098c6c206, type: 3}
       propertyPath: m_LocalPosition.x
@@ -317,11 +318,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4904731973584535517, guid: ecb0a7dc6ff98a6428d2906098c6c206, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -475
+      value: -1200
       objectReference: {fileID: 0}
     - target: {fileID: 4904731973584535517, guid: ecb0a7dc6ff98a6428d2906098c6c206, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 174
+      value: 775
       objectReference: {fileID: 0}
     - target: {fileID: 4904731973584535517, guid: ecb0a7dc6ff98a6428d2906098c6c206, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -340,6 +341,41 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ecb0a7dc6ff98a6428d2906098c6c206, type: 3}
+--- !u!1 &276296893
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 276296894}
+  m_Layer: 5
+  m_Name: Tiles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &276296894
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 276296893}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 306087719}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &306087715
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,12 +424,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1800}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -416,7 +452,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -434,7 +470,9 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 276296894}
   - {fileID: 1978324411}
+  - {fileID: 2041421476}
   - {fileID: 1264945257}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -513,7 +551,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5578248851354464457, guid: 8f7e6405007f3d34886f8d3fbe93b3d9, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -475
+      value: -2668
       objectReference: {fileID: 0}
     - target: {fileID: 5578248851354464457, guid: 8f7e6405007f3d34886f8d3fbe93b3d9, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -537,7 +575,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8991211845366865350, guid: 8f7e6405007f3d34886f8d3fbe93b3d9, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -650,7 +688,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 77.99
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -780,6 +818,37 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4904731973584535517, guid: ecb0a7dc6ff98a6428d2906098c6c206, type: 3}
   m_PrefabInstance: {fileID: 275154555}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2041421475
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2041421476}
+  m_Layer: 0
+  m_Name: Pecas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2041421476
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2041421475}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -553.40173, y: 393.7585, z: 0}
+  m_LocalScale: {x: 5.555555, y: 5.555555, z: 5.555555}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 306087719}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2116687377
 GameObject:
   m_ObjectHideFlags: 0
@@ -828,7 +897,8 @@ MonoBehaviour:
   peca: {fileID: 6599603983880432377, guid: 8f7e6405007f3d34886f8d3fbe93b3d9, type: 3}
   pecaBranca: {fileID: 6599603983880432377, guid: 7c569fd5288d538488bffd1a3ab92be4, type: 3}
   pecaPreta: {fileID: 6599603983880432377, guid: cf4241b6fa56321488b35da7f21465fa, type: 3}
-  parent: {fileID: 306087715}
+  parentTiles: {fileID: 276296893}
+  parentPecas: {fileID: 2041421475}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
