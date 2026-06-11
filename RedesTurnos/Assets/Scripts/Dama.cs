@@ -9,6 +9,9 @@ public class Dama : MonoBehaviour
     public GameObject tabuleiro;
     private Tabuleiro _table;
     [SerializeField] private bool isSelected;
+    [SerializeField] private bool isDama;
+    
+    [SerializeField] private Sprite[] sprites;
 
     // Update is called once per frame
     void Start()
@@ -60,7 +63,7 @@ public class Dama : MonoBehaviour
 
     private void VerifyNearTiles()
     {
-        if (time == enumCor.branco)
+        if (time == enumCor.branco && !isDama)
         {
             for (int i = 0; i < 8; i++)
             {
@@ -76,7 +79,24 @@ public class Dama : MonoBehaviour
                 }
             }   
         }
-        if (time == enumCor.preto)
+        else if (time == enumCor.branco && isDama)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    GameObject tile = _table.espacos[i, j];
+                    TilePosition tilePosition = tile.GetComponent<TilePosition>();
+                    Button tileButton = tile.gameObject.GetComponent<Button>();
+                    if (Math.Abs(tilePosition.x - pecaLugar.x) == 1 && Math.Abs(tilePosition.y - pecaLugar.y) == 1)
+                    {
+                        tileButton.interactable = true;
+                    }
+                }
+            }
+        }
+        
+        if (time == enumCor.preto && !isDama)
         {
             for (int i = 0; i < 8; i++)
             {
@@ -92,6 +112,23 @@ public class Dama : MonoBehaviour
                 }
             }   
         }
+        else if (time == enumCor.preto && isDama)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    GameObject tile = _table.espacos[i, j];
+                    TilePosition tilePosition = tile.GetComponent<TilePosition>();
+                    Button tileButton = tile.gameObject.GetComponent<Button>();
+                    if (Math.Abs(tilePosition.x - pecaLugar.x) == 1 && Math.Abs(tilePosition.y - pecaLugar.y) == 1)
+                    {
+                        tileButton.interactable = true;
+                    }
+                }
+            }
+        }
+        
     }
 
     public void UnsellectAllTiles()
@@ -107,12 +144,24 @@ public class Dama : MonoBehaviour
         }
     }
 
-    public void GetNewPosition(int X, int Y, GameObject newTile, enumCor time)
+    public void GetNewPosition(int X, int Y, GameObject newTile, enumCor timeTile)
     {
         pecaLugar.x = X;
         pecaLugar.y = Y;
         gameObject.transform.position = newTile.transform.position;
         isSelected = false;
+        if (time == enumCor.branco && pecaLugar.y == 7)
+        {
+            isDama = true;
+            Image CheckerSprite = GetComponent<Image>();
+            CheckerSprite.sprite = sprites[1];
+        }
+        else if (time == enumCor.preto && pecaLugar.y == 0)
+        {
+            isDama = true;
+            Image CheckerSprite = GetComponent<Image>();
+            CheckerSprite.sprite = sprites[1];
+        }
         GameOM.MovePeca();
         GameManager.Instance.selectedChecker = null;
     }
@@ -124,23 +173,66 @@ public class Dama : MonoBehaviour
             return;
         }
         
-        GameObject selectedChecker = GameManager.Instance.selectedChecker;
+        GameObject selectedChecker = GameManager.Instance.selectedChecker; //Peça que foi escolhida no gameManager
         Dama currentChecker = GameManager.Instance.selectedChecker.GetComponent<Dama>();
         TilePosition checkerPosition = GameManager.Instance.selectedChecker.GetComponent<TilePosition>();
-        if (currentChecker != null && (Math.Abs(checkerPosition.x - pecaLugar.x) == 1 && Math.Abs(checkerPosition.y - pecaLugar.y) == 1))
+        // lógica de captura: a peça selecionada (selectedChecker) deve pular sobre esta peça (this)
+        // e pousar na casa imediatamente além dela na mesma direção.
+        if (currentChecker != null)
         {
-            if (currentChecker.time != time)
+            // só pode capturar peça de cor/oponente
+            if (currentChecker.time == time)
+                return;
+
+            int dx = pecaLugar.x - checkerPosition.x;
+            int dy = pecaLugar.y - checkerPosition.y;
+
+            // captura válida apenas se a peça a capturar está a uma casa em diagonal (1,1)
+            if (Math.Abs(dx) == 1 && Math.Abs(dy) == 1)
             {
-                checkerPosition.x = pecaLugar.x;
-                checkerPosition.y = pecaLugar.y;
-                selectedChecker.transform.position = gameObject.transform.position;
-                Destroy(gameObject);
+                int landingX = pecaLugar.x + dx; // casa além da peça capturada
+                int landingY = pecaLugar.y + dy;
+
+                // verificar limites do tabuleiro
+                if (landingX < 0 || landingX > 7 || landingY < 0 || landingY > 7)
+                {
+                    Debug.Log("Movimento inválido: casa de pouso fora do tabuleiro.");
+                    return;
+                }
+
+                // verificar se existe alguma peça ocupando a casa de pouso
+                bool occupied = false;
+                Dama[] todasPecas = FindObjectsOfType<Dama>();
+                foreach (Dama p in todasPecas)
+                {
+                    TilePosition tp = p.GetComponent<TilePosition>();
+                    if (tp != null && tp.x == landingX && tp.y == landingY)
+                    {
+                        occupied = true;
+                        break;
+                    }
+                }
+
+                if (occupied)
+                {
+                    // se houver alguma peça na casa de pouso, movimento inválido
+                    Debug.Log("Movimento inválido: casa de pouso ocupada.");
+                    return;
+                }
+
+                // movimento válido: mover selectedChecker para a casa de pouso e destruir a peça capturada
+                checkerPosition.x = landingX;
+                checkerPosition.y = landingY;
+                // Note: espacos is stored as [row(y), column(x)] in Tabuleiro, so index as [landingY, landingX]
+                GameObject landingTile = _table.espacos[landingY, landingX];
+                Vector3 landingPos = landingTile.transform.position;
+                // manter a peça à frente dos tiles (z negativo como ao instanciar)
+                landingPos.z = -1f;
+                selectedChecker.transform.position = landingPos;
                 UnsellectAllTiles();
                 GameOM.MovePeca();
-            }
-            else
-            {
-                Debug.Log("Não é possível comer uma peça do mesmo time");
+                Destroy(gameObject);
+                GameManager.Instance.selectedChecker = null;
             }
         }
     }

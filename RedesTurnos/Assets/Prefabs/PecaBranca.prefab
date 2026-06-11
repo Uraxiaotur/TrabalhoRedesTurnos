@@ -61,14 +61,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.990566, g: 0.8811838, b: 0.5934051, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -2413806693520163455, guid: f4c6ebd543374f9458af9e2821af45dd, type: 3}
+  m_Sprite: {fileID: -3593096494950662801, guid: 104db52b80dc24546a7d91e6a2540433, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -150,6 +150,10 @@ MonoBehaviour:
   pecaLugar: {fileID: 0}
   tabuleiro: {fileID: 0}
   isSelected: 0
+  isDama: 0
+  sprites:
+  - {fileID: -3593096494950662801, guid: 104db52b80dc24546a7d91e6a2540433, type: 3}
+  - {fileID: -644317588753780887, guid: 104db52b80dc24546a7d91e6a2540433, type: 3}
 --- !u!114 &8042526790778948471
 MonoBehaviour:
   m_ObjectHideFlags: 0

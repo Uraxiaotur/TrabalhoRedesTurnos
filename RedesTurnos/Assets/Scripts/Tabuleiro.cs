@@ -12,14 +12,15 @@ public class Tabuleiro : MonoBehaviour
     [SerializeField] private Button pecaPreta;
     [SerializeField] private GameObject parentTiles;
     [SerializeField] private GameObject parentPecas;
-    public GameObject[] pecasBrancas;
-    public GameObject[] pecasPretas;
-    public GameObject[,] espacos;
+    public GameObject[,] pecasBrancas = new GameObject[n, n];
+    public GameObject[,] pecasPretas  = new GameObject[n, n];
+    public GameObject[,] espacos  = new GameObject[n, n];
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         ConstruirTabuleiro();
+        ShowTilesArray();
     }
 
     private void ConstruirTabuleiro()
@@ -71,31 +72,41 @@ public class Tabuleiro : MonoBehaviour
             Button novaPeca = Instantiate(pecaBranca, pecaLugar, Quaternion.identity);
             novaPeca.GetComponent<TilePosition>().x = X;
             novaPeca.GetComponent<TilePosition>().y = Y;
-            Image image = novaPeca.GetComponent<Image>();
-            image.color = Color.white;
             novaPeca.transform.SetParent(parentPecas.transform);
-            pecasBrancas[X] = novaPeca.gameObject;
+            pecasBrancas[X,Y] = novaPeca.gameObject;
         }
         else if (time == "preta")
         {
             Button novaPeca = Instantiate(pecaPreta, pecaLugar, Quaternion.identity);
             novaPeca.GetComponent<TilePosition>().x = X;
             novaPeca.GetComponent<TilePosition>().y = Y;
-            Image image = novaPeca.GetComponent<Image>();
-            image.color = Color.black;
             novaPeca.transform.SetParent(parentPecas.transform);
-            pecasPretas[X] = novaPeca.gameObject;
+            pecasPretas[X,Y] = novaPeca.gameObject;
         }
     }
 
     private void ShowTilesArray()
     {
-        foreach (GameObject espacos in espacos)
+        foreach (GameObject pecaBranca in pecasBrancas)
         {
-            espacos.GetComponent<TilePosition>().x.ToString();
-            espacos.GetComponent<TilePosition>().y.ToString();
+            if (pecaBranca != null)
+            {
+                pecaBranca.GetComponent<TilePosition>().x.ToString();
+                pecaBranca.GetComponent<TilePosition>().y.ToString();
             
-            Debug.Log("X: " + espacos.GetComponent<TilePosition>().x + " Y: " + espacos.GetComponent<TilePosition>().y);
+                Debug.Log("X: " + pecaBranca.GetComponent<TilePosition>().x + " Y: " + pecaBranca.GetComponent<TilePosition>().y);   
+            }
+        }
+        
+        foreach (GameObject pecaPreta in pecasPretas)
+        {
+            if (pecaPreta != null)
+            {
+                pecaPreta.GetComponent<TilePosition>().x.ToString();
+                pecaPreta.GetComponent<TilePosition>().y.ToString();
+            
+                Debug.Log("X: " + pecaPreta.GetComponent<TilePosition>().x + " Y: " + pecaPreta.GetComponent<TilePosition>().y);   
+            }
         }
     }
 }
