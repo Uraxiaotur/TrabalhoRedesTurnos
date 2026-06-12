@@ -16,4 +16,24 @@ public class GameOM : MonoBehaviour
     {
         OnMovePeca?.Invoke();
     }
+    
+    public static event Action<enumCor> OnTeamVictory;
+
+    public static void TeamVictory(enumCor cor)
+    {
+        OnTeamVictory?.Invoke(cor);
+    }
+    
+    public static event Action<enumCor> OnCheckerCollected;
+    
+    public static void CheckerCollected(enumCor cor)
+    {
+        OnCheckerCollected?.Invoke(cor);
+    }
+
+    public static event Action OnUIChange;
+    public static void UIChange()
+    {
+        OnUIChange?.Invoke();
+    }
 }

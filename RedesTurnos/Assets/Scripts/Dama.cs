@@ -20,6 +20,16 @@ public class Dama : MonoBehaviour
         tabuleiro = GameObject.Find("Tabuleiro");
         _table = tabuleiro.GetComponent<Tabuleiro>();
     }
+
+    private void OnEnable()
+    {
+        GameOM.OnMovePeca += Promotion;
+    }
+    
+    private void OnDisable()
+    {
+        GameOM.OnMovePeca -= Promotion;
+    }
     
     public void Selected()
     {
@@ -42,9 +52,6 @@ public class Dama : MonoBehaviour
             GameManager.Instance.SelectedChecker(gameObject);
             VerifyNearTiles();
             isSelected = true;
-        }
-        else
-        {
         }
     }
 
@@ -150,18 +157,6 @@ public class Dama : MonoBehaviour
         pecaLugar.y = Y;
         gameObject.transform.position = newTile.transform.position;
         isSelected = false;
-        if (time == enumCor.branco && pecaLugar.y == 7)
-        {
-            isDama = true;
-            Image CheckerSprite = GetComponent<Image>();
-            CheckerSprite.sprite = sprites[1];
-        }
-        else if (time == enumCor.preto && pecaLugar.y == 0)
-        {
-            isDama = true;
-            Image CheckerSprite = GetComponent<Image>();
-            CheckerSprite.sprite = sprites[1];
-        }
         GameOM.MovePeca();
         GameManager.Instance.selectedChecker = null;
     }
@@ -229,11 +224,30 @@ public class Dama : MonoBehaviour
                 // manter a peça à frente dos tiles (z negativo como ao instanciar)
                 landingPos.z = -1f;
                 selectedChecker.transform.position = landingPos;
+                
                 UnsellectAllTiles();
                 GameOM.MovePeca();
                 Destroy(gameObject);
                 GameManager.Instance.selectedChecker = null;
+                GameOM.CheckerCollected(time);
             }
+        }
+    }
+
+    private void Promotion()
+    {
+        if(time == enumCor.branco && pecaLugar.y == 7)
+        {
+            isDama = true;
+            Image sprite = gameObject.GetComponent<Image>();
+            sprite.sprite = sprites[1];
+        }
+
+        if (time == enumCor.preto && pecaLugar.y == 0)
+        {
+            isDama = true;
+            Image sprite = gameObject.GetComponent<Image>();
+            sprite.sprite = sprites[1];
         }
     }
 }
