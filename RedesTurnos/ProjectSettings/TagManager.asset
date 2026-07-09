@@ -8,6 +8,7 @@ TagManager:
   - Preta
   - Branca
   - Selectable
+  - Tabuleiro
   layers:
   - Default
   - TransparentFX
