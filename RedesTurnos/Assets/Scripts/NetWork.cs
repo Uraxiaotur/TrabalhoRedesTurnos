@@ -23,7 +23,6 @@ public class Network : MonoBehaviour
     public List<Button> pecasBrancas;
     public List<Button> pecasPretas;
 
-
     TcpListener listener;
     TcpClient client;
     NetworkStream stream;
@@ -59,16 +58,16 @@ public class Network : MonoBehaviour
     
     void Start()
     {
-        
-        if(isServer)
-        {
-            networkThread = new Thread(StartServer);
+       if(isServer)
+       {
+           networkThread = new Thread(StartServer);
 
             networkThread.Start();
         }
         else
         {
-            networkThread = new Thread(StartClient);
+            networkThread =
+                new Thread(StartClient);
 
             networkThread.Start();
         }
@@ -78,7 +77,10 @@ public class Network : MonoBehaviour
     {
         AddMessage("Servidor iniciado");
 
-        listener = new TcpListener(IPAddress.Any, port);
+        listener =
+            new TcpListener(
+                IPAddress.Any,
+                port);
 
         listener.Start();
 
@@ -99,11 +101,15 @@ public class Network : MonoBehaviour
     {
         AddMessage("Conectando...");
 
-        client = new TcpClient();
+        client =
+            new TcpClient();
 
-        client.Connect(serverIP, port);
+        client.Connect(
+            serverIP,
+            port);
 
-        stream = client.GetStream();
+        stream =
+            client.GetStream();
 
         AddMessage("Conectado");
 
@@ -119,15 +125,26 @@ public class Network : MonoBehaviour
 
     void ReceiveLoop()
     {
-        byte[] buffer = new byte[1024];
+        byte[] buffer =
+            new byte[1024];
 
-        while(true)
+        while (true)
         {
-            int size = stream.Read(buffer, 0, buffer.Length);
+            int size =
+                stream.Read(
+                    buffer,
+                    0,
+                    buffer.Length);
 
-            string msg = Encoding.UTF8.GetString(buffer, 0, size);
+            string msg =
+                Encoding.UTF8.GetString(
+                    buffer,
+                    0,
+                    size);
 
-            AddMessage("Recebido: " + msg);
+            AddMessage(
+                "Recebido: " + msg);
+
             HandleMessage(msg);
         }
     }
@@ -150,6 +167,7 @@ public class Network : MonoBehaviour
             string cor = parts[5];
 
             MainThreadAction(() => ApplyRemoteMove(fromX, fromY, toX, toY, cor));
+            MainThreadAction(() => Debug.Log($"Peça se mexeu"));
         }
         else if (cmd == "CAPTURE" && parts.Length >= 8)
         {
@@ -162,6 +180,7 @@ public class Network : MonoBehaviour
             string moverCor = parts[7];
 
             MainThreadAction(() => ApplyRemoteCapture(fromX, fromY, capturedX, capturedY, toX, toY, moverCor));
+            MainThreadAction(() => Debug.Log($"Peça se mexeu"));
         }
     }
 
@@ -186,14 +205,6 @@ public class Network : MonoBehaviour
         AddMessage("Enviado: " + msg);
     }
 
-    // Send serialized message over the stream
-    void SendPosition(string msg)
-    {
-        if (stream == null) return;
-
-        Send(msg);
-    }
-
     void AddMessage(string msg)
     {
         lock(messages)
@@ -216,7 +227,7 @@ public class Network : MonoBehaviour
 
         lock (actions)
         {
-            while(actions.Count > 0)
+            while (actions.Count > 0)
             {
                 actions.Dequeue().Invoke();
             }
