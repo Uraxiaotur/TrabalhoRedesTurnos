@@ -23,6 +23,7 @@ public class Network : MonoBehaviour
     public List<Button> pecasBrancas;
     public List<Button> pecasPretas;
 
+
     TcpListener listener;
     TcpClient client;
     NetworkStream stream;
@@ -205,6 +206,14 @@ public class Network : MonoBehaviour
         AddMessage("Enviado: " + msg);
     }
 
+    // Send serialized message over the stream
+    void SendPosition(string msg)
+    {
+        if (stream == null) return;
+
+        Send(msg);
+    }
+
     void AddMessage(string msg)
     {
         lock(messages)
@@ -227,7 +236,7 @@ public class Network : MonoBehaviour
 
         lock (actions)
         {
-            while (actions.Count > 0)
+            while(actions.Count > 0)
             {
                 actions.Dequeue().Invoke();
             }
