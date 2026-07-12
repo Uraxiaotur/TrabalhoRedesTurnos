@@ -531,7 +531,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -1156,9 +1156,8 @@ MonoBehaviour:
   isServer: 1
   serverIP: 127.0.0.1
   port: 7777
-  logText: {fileID: 0}
-  damasNoTabuleiro: []
-  Tabuleiro: {fileID: 0}
+  pecasBrancas: []
+  pecasPretas: []
 --- !u!4 &1471324804
 Transform:
   m_ObjectHideFlags: 0

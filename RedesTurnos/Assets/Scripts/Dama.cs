@@ -153,10 +153,19 @@ public class Dama : MonoBehaviour
 
     public void GetNewPosition(int X, int Y, GameObject newTile, enumCor timeTile)
     {
+        // guarda posição anterior para envio
+        int fromX = pecaLugar.x;
+        int fromY = pecaLugar.y;
+
         pecaLugar.x = X;
         pecaLugar.y = Y;
         gameObject.transform.position = newTile.transform.position;
         isSelected = false;
+
+        // enviar mensagem serializada de movimento: MOVE;fromX;fromY;toX;toY;cor
+        string moveMsg = $"MOVE;{fromX};{fromY};{X};{Y};{time}";
+        GameOM.SendCheckerPositionMessage(moveMsg);
+
         GameOM.MovePeca();
         GameManager.Instance.selectedChecker = null;
     }
@@ -216,6 +225,10 @@ public class Dama : MonoBehaviour
                 }
 
                 // movimento válido: mover selectedChecker para a casa de pouso e destruir a peça capturada
+                // guardar origem da peça que captura
+                int fromX = checkerPosition.x;
+                int fromY = checkerPosition.y;
+
                 checkerPosition.x = landingX;
                 checkerPosition.y = landingY;
                 // Note: espacos is stored as [row(y), column(x)] in Tabuleiro, so index as [landingY, landingX]
@@ -226,6 +239,12 @@ public class Dama : MonoBehaviour
                 selectedChecker.transform.position = landingPos;
                 
                 UnsellectAllTiles();
+                // enviar mensagem de captura: CAPTURE;fromX;fromY;capturedX;capturedY;toX;toY;corMover
+                int capturedX = pecaLugar.x;
+                int capturedY = pecaLugar.y;
+                string captureMsg = $"CAPTURE;{fromX};{fromY};{capturedX};{capturedY};{landingX};{landingY};{currentChecker.time}";
+                GameOM.SendCheckerPositionMessage(captureMsg);
+
                 GameOM.MovePeca();
                 Destroy(gameObject);
                 GameManager.Instance.selectedChecker = null;

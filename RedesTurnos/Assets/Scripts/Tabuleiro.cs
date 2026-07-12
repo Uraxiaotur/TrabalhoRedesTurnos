@@ -20,7 +20,7 @@ public class Tabuleiro : MonoBehaviour
     void Start()
     {
         ConstruirTabuleiro();
-        ShowTilesArray();
+        //ShowTilesArray();
     }
 
     private void ConstruirTabuleiro()
@@ -74,6 +74,7 @@ public class Tabuleiro : MonoBehaviour
             novaPeca.GetComponent<TilePosition>().y = Y;
             novaPeca.transform.SetParent(parentPecas.transform);
             pecasBrancas[X,Y] = novaPeca.gameObject;
+            Network.Instance.GetWhiteCheckers(novaPeca);
         }
         else if (time == "preta")
         {
@@ -82,6 +83,7 @@ public class Tabuleiro : MonoBehaviour
             novaPeca.GetComponent<TilePosition>().y = Y;
             novaPeca.transform.SetParent(parentPecas.transform);
             pecasPretas[X,Y] = novaPeca.gameObject;
+            Network.Instance.GetBlackCheckers(novaPeca);
         }
     }
 
