@@ -19,8 +19,10 @@ public class Network : MonoBehaviour
     public int port = 7777;
 
     [Header("Cena")]
+    public TMP_Text logText;
     public List<Button> pecasBrancas;
     public List<Button> pecasPretas;
+
 
     TcpListener listener;
     TcpClient client;
@@ -202,7 +204,17 @@ public class Network : MonoBehaviour
 
     void Update()
     {
-        lock(actions)
+        lock (messages)
+        {
+            while (messages.Count > 0)
+            {
+                logText.text +=
+                    "\n" +
+                    messages.Dequeue();
+            }
+        }
+
+        lock (actions)
         {
             while(actions.Count > 0)
             {
